@@ -9,118 +9,194 @@ body {
     width: 100%;
     min-height: 100vh;
     height: 100%;
-
+    color: #fff;
     #root {
         width: 100%;
         height: 100%;
         position: relative;
-    }
-
-    .vidPlayerCont {
-        width: 900px;
-        #videoPlayer {
-            width: 100%;
+        .inputRange {
             position: relative;
-            user-select: none;
-            video {
-                width: 100%;
-            }
-            button {
-                background: none;
-                border: none;
-                cursor: pointer;
-                display: grid;
-                place-items: center;
-                overflow: hidden;
-            }
-            .controls {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            > span {
+                height: 4px;
                 position: absolute;
-                left: 0;
-                bottom: 0;
-                --height: 60px;
-                --seekbar-height: 20px;
-                --ctrlBtns-height: 40px;
-                height: var(--height);
+            }
+            .full {
                 width: 100%;
-                background: linear-gradient(to top, #000, transparent);
-                display: grid;
-                grid-template-rows: var(--seekbar-height) auto;
-                padding: 0 15px;
-                .seekbar {
-                    height: 100%;
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    justify-content: left;
+                background: #fff6;
+            }
+            .slider {
+                background: #fff;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    background: #ff9100;
+                    width: 15px;
+                    height: 15px;
+                    transform: translate(50%, calc(-50% + 2px));
+                    border-radius: 100%;
+                }
+            }
+        }
+        .vidPlayerCont {
+            width: 900px;
+            #videoPlayer {
+                width: 100%;
+                position: relative;
+                user-select: none;
+                video {
+                    width: 100%;
+                }
+                button {
+                    background: none;
+                    border: none;
                     cursor: pointer;
-                    &:hover {
+                    display: grid;
+                    place-items: center;
+                    overflow: hidden;
+                }
+                .controls {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    --height: 65px;
+                    --seekbar-height: 15px;
+                    --ctrlBtns-height: 50px;
+                    height: var(--height);
+                    width: 100%;
+                    background: linear-gradient(to top, #000, transparent);
+                    display: grid;
+                    grid-template-rows: var(--seekbar-height) 50px;
+                    padding: 0 15px;
+                    .seekbar {
+                        height: 100%;
+                        position: relative;
+                        display: flex;
+                        align-items: flex-end;
+                        justify-content: left;
+                        cursor: pointer;
+                        &:hover {
+                            .current {
+                                &::after {
+                                    width: 15px;
+                                    height: 15px;
+                                }
+                            }
+                        }
+                        > span {
+                            position: absolute;
+                            height: 4px;
+                            transition: 0.2s height;
+                        }
+                        .full {
+                            width: 100%;
+                            background: #fff2;
+                        }
+                        .loaded {
+                            width: 0;
+                            background: #fff3;
+                        }
+                        .hover {
+                            width: 0;
+                            background: #fff6;
+                            display: flex;
+                            align-items: center;
+                        }
                         .current {
+                            width: 0;
+                            --colorbg: #ff9100;
+                            background: var(--colorbg);
+                            display: flex;
+                            align-items: center;
                             &::after {
-                                width: 15px;
-                                height: 15px;
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                transition: 0.2s;
+                                transform: translate(50%, calc(-50% + 2px));
+                                width: 0;
+                                height: 0;
+                                border-radius: 100%;
+                                background-color: var(--colorbg);
                             }
                         }
                     }
-                    > span {
-                        position: absolute;
-                        height: 4px;
-                        transition: 0.2s height;
-                    }
-                    .full {
-                        width: 100%;
-                        background: #fff2;
-                    }
-                    .loaded {
-                        width: 0;
-                        background: #fff3;
-                    }
-                    .hover {
-                        width: 0;
-                        background: #fff6;
-                        display: flex;
-                        align-items: center;
-                    }
-                    .current {
-                        width: 0;
-                        --colorbg: #ff9100;
-                        background: var(--colorbg);
-                        display: flex;
-                        align-items: center;
-                        &::after {
-                            content: "";
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                            transition: 0.2s;
-                            transform: translate(50%, calc(-50% + 2px));
-                            width: 0;
-                            height: 0;
-                            border-radius: 100%;
-                            background-color: var(--colorbg);
-                        }
-                    }
-                }
-                .ctrlBtns {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: stretch;
-                    > div {
+                    .ctrlBtns {
                         display: flex;
                         flex-direction: row;
-                        align-items: center;
-                        > button {
-                            height: var(--ctrlBtns-height);
-                            width: var(--ctrlBtns-height);
-                            transform: scale(1);
-                            transform: 0.2s;
-                            &:hover {
-                                transform: scale(1.2);
+                        align-items: stretch;
+                        --btn-color: #ff9100;
+                        > div {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: stretch;
+                            > button {
+                                height: var(--ctrlBtns-height);
+                                width: var(--ctrlBtns-height);
+                                &::before {
+                                    content: attr(data-title);
+                                    // display: none;
+                                    position: absolute;
+                                    top: 0;
+                                    transform: translate(0, -100%) scale(0);
+                                    transition: 0.2s;
+                                    border-radius: 5px;
+                                    transform-origin: bottom;
+                                    font-weight: bold;
+                                    background: #212121;
+                                    padding: 5px;
+                                    color: #fff;
+                                }
+                                &:hover {
+                                    &::before {
+                                        display: block;
+                                        transform: translate(0, -100%) scale(1);
+                                    }
+                                }
                             }
                         }
-                    }
-                    .left {
-                    }
-                    .right {
+                        .left {
+                            .audiorange {
+                                display: flex;
+                                align-items: center;
+                                position: relative;
+                                width: calc(var(--ctrlBtns-height) * 2);
+                                overflow: hidden;
+                                input[type="range"] {
+                                    position: absolute;
+                                    appearance: none;
+                                    width: 100%;
+                                    height: 4px;
+                                    border-radius: 0;
+                                    background: #fff6;
+                                    outline: none;
+                                    cursor: pointer;
+                                    &::-webkit-slider-thumb {
+                                        appearance: none;
+                                        width: 15px;
+                                        height: 15px;
+                                        background: var(--btn-color);
+                                        border-radius: 100%;
+                                    }
+                                }
+                                .trail {
+                                    position: absolute;
+                                    height: 4px;
+                                    cursor: pointer;
+                                    background: var(--btn-color);
+                                    // transform: translate(7.5px, 0);
+                                }
+                            }
+                        }
+                        .right {
+                        }
                     }
                 }
             }

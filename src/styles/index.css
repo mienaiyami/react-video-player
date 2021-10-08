@@ -10,6 +10,7 @@ body {
   width: 100%;
   min-height: 100vh;
   height: 100%;
+  color: #fff;
 }
 
 body #root {
@@ -18,11 +19,48 @@ body #root {
   position: relative;
 }
 
-body .vidPlayerCont {
+body #root .inputRange {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+body #root .inputRange > span {
+  height: 4px;
+  position: absolute;
+}
+
+body #root .inputRange .full {
+  width: 100%;
+  background: #fff6;
+}
+
+body #root .inputRange .slider {
+  background: #fff;
+}
+
+body #root .inputRange .slider::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #ff9100;
+  width: 15px;
+  height: 15px;
+  -webkit-transform: translate(50%, calc(-50% + 2px));
+          transform: translate(50%, calc(-50% + 2px));
+  border-radius: 100%;
+}
+
+body #root .vidPlayerCont {
   width: 900px;
 }
 
-body .vidPlayerCont #videoPlayer {
+body #root .vidPlayerCont #videoPlayer {
   width: 100%;
   position: relative;
   -webkit-user-select: none;
@@ -31,11 +69,11 @@ body .vidPlayerCont #videoPlayer {
           user-select: none;
 }
 
-body .vidPlayerCont #videoPlayer video {
+body #root .vidPlayerCont #videoPlayer video {
   width: 100%;
 }
 
-body .vidPlayerCont #videoPlayer button {
+body #root .vidPlayerCont #videoPlayer button {
   background: none;
   border: none;
   cursor: pointer;
@@ -45,62 +83,62 @@ body .vidPlayerCont #videoPlayer button {
   overflow: hidden;
 }
 
-body .vidPlayerCont #videoPlayer .controls {
+body #root .vidPlayerCont #videoPlayer .controls {
   position: absolute;
   left: 0;
   bottom: 0;
-  --height: 60px;
-  --seekbar-height: 20px;
-  --ctrlBtns-height: 40px;
+  --height: 65px;
+  --seekbar-height: 15px;
+  --ctrlBtns-height: 50px;
   height: var(--height);
   width: 100%;
   background: -webkit-gradient(linear, left bottom, left top, from(#000), to(transparent));
   background: linear-gradient(to top, #000, transparent);
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: var(--seekbar-height) auto;
-      grid-template-rows: var(--seekbar-height) auto;
+  -ms-grid-rows: var(--seekbar-height) 50px;
+      grid-template-rows: var(--seekbar-height) 50px;
   padding: 0 15px;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar {
   height: 100%;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   -webkit-box-pack: left;
       -ms-flex-pack: left;
           justify-content: left;
   cursor: pointer;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar:hover .current::after {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar:hover .current::after {
   width: 15px;
   height: 15px;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar > span {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar > span {
   position: absolute;
   height: 4px;
   -webkit-transition: 0.2s height;
   transition: 0.2s height;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar .full {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .full {
   width: 100%;
   background: #fff2;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar .loaded {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .loaded {
   width: 0;
   background: #fff3;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar .hover {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .hover {
   width: 0;
   background: #fff6;
   display: -webkit-box;
@@ -111,7 +149,7 @@ body .vidPlayerCont #videoPlayer .controls .seekbar .hover {
           align-items: center;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar .current {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .current {
   width: 0;
   --colorbg: #ff9100;
   background: var(--colorbg);
@@ -123,7 +161,7 @@ body .vidPlayerCont #videoPlayer .controls .seekbar .current {
           align-items: center;
 }
 
-body .vidPlayerCont #videoPlayer .controls .seekbar .current::after {
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .current::after {
   content: "";
   position: absolute;
   top: 0;
@@ -138,7 +176,21 @@ body .vidPlayerCont #videoPlayer .controls .seekbar .current::after {
   background-color: var(--colorbg);
 }
 
-body .vidPlayerCont #videoPlayer .controls .ctrlBtns {
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  --btn-color: #ff9100;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -151,30 +203,72 @@ body .vidPlayerCont #videoPlayer .controls .ctrlBtns {
           align-items: stretch;
 }
 
-body .vidPlayerCont #videoPlayer .controls .ctrlBtns > div {
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button {
+  height: var(--ctrlBtns-height);
+  width: var(--ctrlBtns-height);
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 0;
+  -webkit-transform: translate(0, -100%) scale(0);
+          transform: translate(0, -100%) scale(0);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  border-radius: 5px;
+  -webkit-transform-origin: bottom;
+          transform-origin: bottom;
+  font-weight: bold;
+  background: #212121;
+  padding: 5px;
+  color: #fff;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button:hover::before {
+  display: block;
+  -webkit-transform: translate(0, -100%) scale(1);
+          transform: translate(0, -100%) scale(1);
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
+  width: calc(var(--ctrlBtns-height) * 2);
+  overflow: hidden;
 }
 
-body .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button {
-  height: var(--ctrlBtns-height);
-  width: var(--ctrlBtns-height);
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  -webkit-transform: 0.2s;
-          transform: 0.2s;
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange input[type="range"] {
+  position: absolute;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 0;
+  background: #fff6;
+  outline: none;
+  cursor: pointer;
 }
 
-body .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button:hover {
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+          appearance: none;
+  width: 15px;
+  height: 15px;
+  background: var(--btn-color);
+  border-radius: 100%;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange .trail {
+  position: absolute;
+  height: 4px;
+  cursor: pointer;
+  background: var(--btn-color);
 }
 /*# sourceMappingURL=index.css.map */
