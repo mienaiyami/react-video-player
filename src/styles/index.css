@@ -11,6 +11,7 @@ body {
   min-height: 100vh;
   height: 100%;
   color: #fff;
+  font-family: sans-serif;
 }
 
 body #root {
@@ -61,16 +62,83 @@ body #root .vidPlayerCont {
 }
 
 body #root .vidPlayerCont #videoPlayer {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
   width: 100%;
   position: relative;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
 }
 
-body #root .vidPlayerCont #videoPlayer video {
+body #root .vidPlayerCont #videoPlayer .vidCont {
   width: 100%;
+  height: 100%;
+  position: relative;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+body #root .vidPlayerCont #videoPlayer .vidCont .loading {
+  position: absolute;
+  width: 80px;
+  display: none;
+  height: 80px;
+  border-radius: 100%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -100%);
+          transform: translate(-50%, -100%);
+}
+
+body #root .vidPlayerCont #videoPlayer .vidCont .loading svg circle {
+  stroke: #ffffff;
+  stroke-width: 7px;
+  fill: none;
+  --length: 219.5px;
+  stroke-dasharray: var(--length);
+  stroke-dashoffset: 0;
+  -webkit-animation: rotate 4s infinite linear;
+          animation: rotate 4s infinite linear;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+}
+
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    stroke-dashoffset: calc(var(--length) * 2);
+  }
+  100% {
+    -webkit-transform: rotate(1440deg);
+            transform: rotate(1440deg);
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    stroke-dashoffset: calc(var(--length) * 2);
+  }
+  100% {
+    -webkit-transform: rotate(1440deg);
+            transform: rotate(1440deg);
+    stroke-dashoffset: 0;
+  }
+}
+
+body #root .vidPlayerCont #videoPlayer .vidCont video {
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 16 / 9;
 }
 
 body #root .vidPlayerCont #videoPlayer button {
@@ -81,6 +149,7 @@ body #root .vidPlayerCont #videoPlayer button {
   display: grid;
   place-items: center;
   overflow: hidden;
+  color: inherit;
 }
 
 body #root .vidPlayerCont #videoPlayer .controls {
@@ -126,6 +195,17 @@ body #root .vidPlayerCont #videoPlayer .controls .seekbar > span {
   height: 4px;
   -webkit-transition: 0.2s height;
   transition: 0.2s height;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .seekbar .hoveredTime {
+  position: absolute;
+  display: none;
+  top: 0;
+  -webkit-transform: translate(-50%, -100%);
+          transform: translate(-50%, -100%);
+  padding: 5px;
+  border-radius: 5px;
+  background: #212121;
 }
 
 body #root .vidPlayerCont #videoPlayer .controls .seekbar .full {
@@ -187,7 +267,7 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  --btn-color: #ff9100;
+  --btn-color: #fff;
 }
 
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div {
@@ -201,6 +281,7 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
+  position: relative;
 }
 
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button {
@@ -208,12 +289,17 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button {
   width: var(--ctrlBtns-height);
 }
 
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button > svg {
+  fill: var(--btn-color);
+}
+
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button::before {
   content: attr(data-title);
   position: absolute;
+  white-space: nowrap;
   top: 0;
-  -webkit-transform: translate(0, -100%) scale(0);
-          transform: translate(0, -100%) scale(0);
+  -webkit-transform: translate(0, -150%) scale(0);
+          transform: translate(0, -150%) scale(0);
   -webkit-transition: 0.2s;
   transition: 0.2s;
   border-radius: 5px;
@@ -227,8 +313,15 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button::befor
 
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns > div > button:hover::before {
   display: block;
-  -webkit-transform: translate(0, -100%) scale(1);
-          transform: translate(0, -100%) scale(1);
+  -webkit-transform: translate(0, -150%) scale(1);
+          transform: translate(0, -150%) scale(1);
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .volume:hover + .audiorange {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  width: calc(var(--ctrlBtns-height) * 2.5);
+  padding: 0 calc(var(--ctrlBtns-height) * 0.25);
 }
 
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange {
@@ -239,12 +332,26 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange {
       -ms-flex-align: center;
           align-items: center;
   position: relative;
-  width: calc(var(--ctrlBtns-height) * 2);
+  width: 0;
   overflow: hidden;
+  padding: 0 0;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  -webkit-transform-origin: left;
+          transform-origin: left;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange:hover {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  width: calc(var(--ctrlBtns-height) * 2.5);
+  padding: 0 calc(var(--ctrlBtns-height) * 0.25);
 }
 
 body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange input[type="range"] {
-  position: absolute;
+  position: relative;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -269,6 +376,68 @@ body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .left .audiorange .tr
   position: absolute;
   height: 4px;
   cursor: pointer;
+  max-width: calc(var(--ctrlBtns-height) * 2);
   background: var(--btn-color);
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right {
+  margin-left: auto;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions {
+  position: absolute;
+  width: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background: #212121;
+  height: 200px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #fff;
+  bottom: calc(100% + 10px);
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions .optionTab h3 {
+  padding: 5px 0;
+  font-size: 20px;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions .optionTab .options {
+  padding: 5px;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions .optionTab .options:hover {
+  background: #fff2;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions .optionTab .options:active {
+  background: #fff4;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .settingOptions .optionTab .selected {
+  background: #fff2;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .time {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 18px;
+}
+
+body #root .vidPlayerCont #videoPlayer .controls .ctrlBtns .right .fullscreen::before {
+  right: 0px;
 }
 /*# sourceMappingURL=index.css.map */
